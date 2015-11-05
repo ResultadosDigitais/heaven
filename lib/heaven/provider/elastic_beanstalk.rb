@@ -1,3 +1,5 @@
+require "shellwords"
+
 module Heaven
   # Top-level module for Providers.
   module Provider
@@ -17,7 +19,7 @@ module Heaven
       end
 
       def archive_zip
-        archive_link.gsub(/legacy\.tar\.gz/, "deploy.zip")
+        Shellwords.escape(archive_link.gsub(/legacy\.tar\.gz/, "deploy.zip"))
       end
 
       def archive_path
@@ -25,6 +27,7 @@ module Heaven
       end
 
       def fetch_source_code
+        FileUtils.mkdir_p(working_directory)
         execute_and_log(["curl", archive_zip, "-o", archive_path])
       end
 
