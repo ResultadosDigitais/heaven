@@ -1,4 +1,4 @@
-FROM ruby:2.3.1
+FROM ruby:2.3.4
 MAINTAINER Henrich Moraes <henrich.moraes@resultadosdigitais.com.br>
 
 ENV WORK_DIR /var/app

@@ -10,7 +10,7 @@ services:
   heaven:
     build:
       context: .
-    image: resultadosdigitais/heaven:v1
+    image: resultadosdigitais/heaven:v2
     entrypoint: /var/app/entrypoint.sh
     environment:
       RAILS_ENV: test
