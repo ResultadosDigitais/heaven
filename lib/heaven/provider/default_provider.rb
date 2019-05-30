@@ -11,7 +11,7 @@ module Heaven
 
       # See http://stackoverflow.com/questions/12093748/how-do-i-check-for-valid-git-branch-names
       # and http://linux.die.net/man/1/git-check-ref-format
-      VALID_GIT_REF = %r{\A(?!/)(?!.*(?:/\.|//|@\{|\\|\.\.))[\040-\176&&[^ ~\^:?*\[]]+(?<!\.lock|/|\.)\z}
+      VALID_GIT_REF = %r{\A(?!/)(?!.*(?:/\.|//|@\{|\\|\.\.))[\040-\176&&[^ ~\^:?*\[]]+(?<!\.lock|/|\.)\z}.freeze
 
       def initialize(guid, data)
         @guid        = guid
@@ -72,8 +72,9 @@ module Heaven
       def ref
         deploy_ref = deployment_data["ref"]
         unless deploy_ref =~ VALID_GIT_REF
-          fail "Invalid git reference #{deploy_ref.inspect}"
+          raise "Invalid git reference #{deploy_ref.inspect}"
         end
+
         deploy_ref
       end
 
@@ -129,9 +130,7 @@ module Heaven
         status.pending!
       end
 
-      def completed?
-        status.completed?
-      end
+      delegate :completed?, :to => :status
 
       def execute
         warn "Heaven Provider(#{name}) didn't implement execute"
@@ -142,14 +141,14 @@ module Heaven
       end
 
       def record
-        Deployment.create(:custom_payload  => JSON.dump(custom_payload),
-                          :environment     => environment,
-                          :guid            => guid,
-                          :name            => name,
+        Deployment.create(:custom_payload => JSON.dump(custom_payload),
+                          :environment => environment,
+                          :guid => guid,
+                          :name => name,
                           :name_with_owner => name_with_owner,
-                          :output          => output.url,
-                          :ref             => ref,
-                          :sha             => sha)
+                          :output => output.url,
+                          :ref => ref,
+                          :sha => sha)
       end
 
       def update_output

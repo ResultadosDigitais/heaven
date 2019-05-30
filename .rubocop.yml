@@ -100,6 +100,6 @@ AllCops:
     - 'script/**/*'
     - 'config/**/*'
     - 'vendor/**/*'
-  # By default, the rails cops are not run. Override in project or home
-  # directory .rubocop.yml files, or by giving the -R/--rails option.
-  RunRailsCops: false
+
+Rails:
+  Enabled: true

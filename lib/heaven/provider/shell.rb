@@ -31,9 +31,10 @@ module Heaven
 
       def deployment_command
         script = custom_payload_config.try(:[], "deploy_script")
-        fail "No deploy script configured." unless script
-        fail "Only deploy scripts from the repo are allowed." unless script =~ /\A([\w-]+\/)*[\w-]+(\.\w+)?\Z/
-        fail "Deploy script #{script} not found or not executable" unless File.executable?("./" + script)
+        raise "No deploy script configured." unless script
+        raise "Only deploy scripts from the repo are allowed." unless script =~ %r{\A([\w-]+/)*[\w-]+(\.\w+)?\Z}
+        raise "Deploy script #{script} not found or not executable" unless File.executable?("./" + script)
+
         "./" + script
       end
 
@@ -55,8 +56,9 @@ module Heaven
       def task
         name = deployment_data["task"] || "deploy"
         unless name =~ /deploy(?:\:[\w+:]+)?/
-          fail "Invalid taskname: #{name.inspect}"
+          raise "Invalid taskname: #{name.inspect}"
         end
+
         name
       end
     end

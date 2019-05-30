@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 # A module to include for easy access to writing to a transient filesystem
 module LocalLogFile
   extend ActiveSupport::Concern
   include DeploymentTimeout
 
   def working_directory
-    @working_directory ||= "/tmp/" + \
-      Digest::SHA1.hexdigest([name_with_owner, github_token].join)
+    @working_directory ||= File.join(
+      "/tmp/", Digest::SHA1.hexdigest([name_with_owner, github_token, environment].join)
+    )
   end
 
   def checkout_directory
@@ -40,7 +43,7 @@ module LocalLogFile
     log_stderr(last_child.err)
 
     unless last_child.success?
-      fail StandardError, "Task failed: #{cmds.join(" ")}"
+      raise StandardError, "Task failed: #{cmds.join(' ')}"
     end
 
     last_child

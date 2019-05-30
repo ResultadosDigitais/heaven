@@ -1,25 +1,28 @@
 version: "2"
 services:
-    redis:
-        image: redis
-        container_name: heaven_redis
-        networks:
-            - heaven
-    test:
-        build:
-            context: .
-        image: heaven/test
-        command: ["rake"]
-        environment:
-            RAILS_ENV: test
-            REDIS_PROVIDER: REDIS_CONTAINER_URL
-            REDIS_CONTAINER_URL: redis://heaven_redis
-        volumes:
-            - ./:/usr/lib/heaven
-        depends_on:
-            - redis
-        networks:
-            - heaven
-networks:
-    heaven:
-        driver: bridge
+  redis:
+    image: redis:5.0
+    ports:
+      - '6379'
+    volumes:
+      - redis:/data
+
+  heaven:
+    build:
+      context: .
+    image: resultadosdigitais/heaven:v2
+    entrypoint: /var/app/entrypoint.sh
+    environment:
+      RAILS_ENV: test
+      REDIS_PROVIDER: REDIS_CONTAINER_URL
+      REDIS_CONTAINER_URL: redis://redis
+      PORT: 3000
+    volumes:
+      - ./:/var/app
+    ports:
+      - '3000:3000'
+    links:
+      - redis
+
+volumes:
+  redis:
