@@ -41,6 +41,7 @@ module Heaven
       def deployment_environment
         deployments = custom_payload_config.try(:[], "deployments")
         app_name = deployments.try(:[], environment).try(:[], "app_name")
+        hotfix_value = deployment_data["hotfix"] || "no"
 
         {
           "BRANCH" => ref,
@@ -49,7 +50,8 @@ module Heaven
           "DEPLOY_TASK" => task,
           "REPO_NAME" => name_with_owner,
           "GITHUB_ARCHIVE_LINK" => api.archive_link(name_with_owner, :ref => sha),
-          "APP_NAME" => app_name
+          "APP_NAME" => app_name,
+          "HOTFIX" => hotfix_value
         }
       end
 
