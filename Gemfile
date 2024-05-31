@@ -2,20 +2,20 @@ source "https://rubygems.org"
 
 ruby "2.3.4"
 
-gem "rails",    "~>4.2.2"
+gem "rails", "~> 4.2.3"
 gem "resque"
 gem "resque-lock-timeout"
 gem "octokit", "~> 4.0"
 gem "unicorn"
 gem "yajl-ruby"
 gem "posix-spawn"
-gem "warden-github-rails"
+gem "warden-github-rails", ">= 1.1.1"
 gem "faraday"
 gem "faraday_middleware"
 
 # Providers
 gem "dpl",        "1.5.7"
-gem "aws-sdk"
+gem "aws-sdk", ">= 1.52.0"
 gem "capistrano", "2.9.0"
 
 # Notifiers
@@ -29,13 +29,13 @@ group :test do
   gem "webmock"
   gem "simplecov", "0.7.1"
   gem "rubocop"
-  gem "rspec-rails"
+  gem "rspec-rails", ">= 2.14.2"
 end
 
 group :development do
   gem "pry"
   gem "foreman"
-  gem "meta_request"
+  gem "meta_request", ">= 0.4.0"
   gem "better_errors"
   gem "binding_of_caller"
 end
